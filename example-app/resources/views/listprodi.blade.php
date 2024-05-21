@@ -8,7 +8,7 @@
 <h1>Mahasiswa</h1>
 </ul>
     @foreach ($viewmhs as $item)
-        <li>{{ $item["npm</li>
+        <li>{{ $item["npm"]}} - {{ $item["nama"]}}</li>
         
     @endforeach
 </ol>
