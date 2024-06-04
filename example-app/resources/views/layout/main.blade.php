@@ -47,7 +47,7 @@
           </a>
         </li>
          <li class="nav-item">
-          <a class="nav-link" href="{{ url('Mahasiswa') }}">
+          <a class="nav-link" href="{{ url('mahasiswa') }}">
                 <i class="mdi mdi-view-quilt menu-icon"></i>
                 <span class="menu-title">Mahasiswa</span>
           </a>

@@ -12,7 +12,9 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        //
+        $mahasiswas = Mahasiswa::all(); // select * from mahasiswa
+        return view('Mahasiswa.index')
+                ->with('mahasiswas', $mahasiswas);
     }
 
     /**
@@ -20,7 +22,7 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        //
+        return view('mahasiswa.create');
     }
 
     /**
@@ -28,8 +30,20 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $val = $request->validate([
+            'npm'=> "required",
+            'nama'=> "required|unique:mahasiswas",
+            'tempat_lahir'=> "required",
+            'tanggal_lahir'=>  "required",
+            'alamat'=>  "required"
+           ]);
+
+           
+       Mahasiswa::create($val);
+
+       return redirect()->route('mahasiswa.index')->with('success',$val['nama'].' berhasil disimpan');
     }
+    
 
     /**
      * Display the specified resource.
