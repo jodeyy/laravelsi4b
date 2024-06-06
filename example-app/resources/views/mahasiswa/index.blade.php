@@ -42,8 +42,9 @@
                               @method('DELETE')
                               @csrf
                               <button type="submit" class="btn btn-sm btn-rounded btn-danger show_confirm" data-name="{{$item["nama"] }}">Hapus</button>
-
-                              </form>
+                              <a href="{{ route('mahasiswa.edit', $item["id"])}}"
+                              class="btn btn-sm btn-rounded btn-warning">Ubah</a>
+                            </form>
                             </td>
                            
 
