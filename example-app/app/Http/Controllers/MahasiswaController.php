@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\Prodi;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
@@ -22,7 +23,8 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        return view('mahasiswa.create');
+        $prodi = Prodi::all();
+        return view('mahasiswa.create')->with('prodi',$prodi);
     }
 
     /**
@@ -35,13 +37,24 @@ class MahasiswaController extends Controller
             'nama'=> "required|unique:mahasiswas",
             'tempat_lahir'=> "required",
             'tanggal_lahir'=>  "required",
-            'alamat'=>  "required"
+            'alamat'=>  "required",
+            'prodi_id'=>  "required",
+            'url_foto'=>  "required|file|mimes:png,jpg|max:5000"
            ]);
+
+           // ekstensi file yang diupload
+           $ext =
+           $request->url_foto->getClientOriginalExtension();
+           // rename misal:npm.ekstensi 2226240001.png
+           $val['url_foto'] = $request->npm.".".$ext;
+           // upload ke dalam folder public/foto
+           $request->url_foto->move('foto',$val['url_foto']);
+           // simpan ke tabel mahasiswas
 
            
        Mahasiswa::create($val);
 
-       return redirect()->route('mahasiswa.index')->with('success',$val['nama'].' berhasil disimpan');
+       return redirect()->route('mahasiswa.index')->with('success',$val['npm'].' berhasil disimpan');
     }
     
 
@@ -74,6 +87,8 @@ class MahasiswaController extends Controller
      */
     public function destroy(Mahasiswa $mahasiswa)
     {
-        //
+        // dd($mahasiswa);
+        $mahasiswa->delete(); // hapus data  mahasiswa
+        return redirect()->route('mahasiswa.index')->with('success','Data berhasil dihapus.');
     }
 }
