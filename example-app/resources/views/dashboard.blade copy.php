@@ -84,13 +84,13 @@
         type: 'column'
     },
     title: {
-        text: 'Grafik Mahasiswa Mengambil Berdasarkan Program Studi',
-        align: 'center'
+        text: 'Corn vs wheat estimated production for 2020',
+        align: 'left'
     },
     subtitle: {
         text:
             'Source: <a target="_blank" ' +
-            'href="https://www.youtube.com/">Youtube</a>',
+            'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
         align: 'left'
     },
     xAxis: {
@@ -136,4 +136,3 @@
     
 @endsection
     
-
