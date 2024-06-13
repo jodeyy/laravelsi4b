@@ -14,7 +14,14 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
+        if(auth()->user()->role == 'D'){ // jika role dosen (D)
+            $mahasiswas = Mahasiswa::where('user_id',auth()->user()->id)->get();
+        // select * from mahasiswas where user_id = 1
+        }else{
+            $mahasiswas = Mahasiswa::all();
+        }
         $mahasiswas = Mahasiswa::all(); // select * from mahasiswa
+    
         return view('Mahasiswa.index')
                 ->with('mahasiswas', $mahasiswas);
     }
@@ -35,7 +42,9 @@ class MahasiswaController extends Controller
     {
         if($request->url_foto){ //jika ada file foto yang di lampirkan
         
-            
+            if ($request->user()->cannot('create',Mahasiswa::class)){
+        abort(403);
+      }
         $val = $request->validate([
             'npm'=> "required",
             'nama'=> "required|unique:mahasiswas",
@@ -45,16 +54,12 @@ class MahasiswaController extends Controller
             'prodi_id'=>  "required",
             'url_foto'=>  "required|file|mimes:png,jpg|max:5000"
            ]);
-
-        
-
-        //SIMPAN KE TABEL mahasiswa
+         //SIMPAN KE TABEL mahasiswa
            
 
 
            // ekstensi file yang diupload
-           $ext =
-           $request->url_foto->getClientOriginalExtension();
+           $ext = $request->url_foto->getClientOriginalExtension();
            // rename misal:npm.ekstensi 2226240001.png
            $val['url_foto'] = $request->npm.".".$ext;
            // upload ke dalam folder public/foto
@@ -96,9 +101,11 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, Mahasiswa $mahasiswa)
     {
+        if (auth()->user()->cannot
+        ('delete',$mahasiswa)){
+            abort(403);
+        }
         if($request->url_foto){ //jika ada file foto yang di lampirkan
-        
-            
             $val = $request->validate([
                 //'npm'=> "required",
                 'nama'=> "required|unique:mahasiswas",
@@ -108,13 +115,7 @@ class MahasiswaController extends Controller
                 'prodi_id'=>  "required",
                // 'url_foto'=>  "required|file|mimes:png,jpg|max:5000"
                ]);
-    
-            
-    
             //SIMPAN KE TABEL mahasiswa
-               
-    
-    
                // ekstensi file yang diupload
                $ext =
                $request->url_foto->getClientOriginalExtension();
@@ -149,6 +150,10 @@ class MahasiswaController extends Controller
      */
     public function destroy(Mahasiswa $mahasiswa)
     {
+        if (auth()->user()->cannot
+        ('delete',$mahasiswa)){
+            abort(403);
+        }
         // dd($mahasiswa);
         File::delete('foto/'. $mahasiswa['url_foto']);
         $mahasiswa->delete(); // hapus data  mahasiswa

@@ -34,6 +34,9 @@ class ProdiController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->user()->cannot('create',Prodi::class)){
+        abort(403);
+      }
          $val = $request->validate([
             'nama' => "required|unique:fakultas ",
             'singkatan' => "required|max:4",
