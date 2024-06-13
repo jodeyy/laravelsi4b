@@ -32,6 +32,9 @@ class FakultasController extends Controller
     {
        // dd($request);
        // validasi form
+      if ($request->user()->cannot('create',Fakultas::class)){
+        abort(403);
+      }
        $val = $request->validate([
         'nama'=> "required|unique:fakultas",
         'singkatan'=> "required|max:4"
